@@ -21,10 +21,9 @@ often hard to address the correct stack slot and provide arguments to opcodes at
 point on the stack. Solidity's inline assembly tries to facilitate that and other issues
 arising when writing manual assembly by the following features:
 
-* functional-style opcodes: ``mul(1, add(2, 3))`` instead of ``push1 3 push1 2 add push1 1 mul``
+* functional-style opcodes: ``mul(1, add(2, 3))``
 * assembly-local variables: ``let x := add(2, 3)  let y := mload(0x40)  x := add(x, y)``
 * access to external variables: ``function f(uint x) public { assembly { x := sub(x, 1) } }``
-* labels: ``let x := 10  repeat: x := sub(x, 1) jumpi(repeat, eq(x, 0))``
 * loops: ``for { let i := 0 } lt(i, x) { i := add(i, 1) } { y := mul(2, y) }``
 * if statements: ``if slt(x, 0) { x := sub(0, x) }``
 * switch statements: ``switch x case 0 { y := mul(x, 2) } default { y := 0 }``
@@ -134,7 +133,6 @@ usual ``//`` and ``/* */`` comments. Inline assembly is marked by ``assembly { .
 these curly braces, the following can be used (see the later sections for more details)
 
  - literals, i.e. ``0x123``, ``42`` or ``"abc"`` (strings up to 32 characters)
- - opcodes (in "instruction style"), e.g. ``mload sload dup1 sstore``, for a list see below
  - opcodes in functional style, e.g. ``add(1, mlod(0))``
  - labels, e.g. ``name:``
  - variable declarations, e.g. ``let x := 7``, ``let x := add(y, 3)`` or ``let x`` (initial value of empty (0) is assigned)
