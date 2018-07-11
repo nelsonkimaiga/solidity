@@ -9620,7 +9620,7 @@ BOOST_AUTO_TEST_CASE(mutex)
 				shares -= amount;
 				return shares;
 			}
-			function withdrawUnprotected(uint amount) external returns (uint) {
+			function withdrawUnprotected(uint amount) public returns (uint) {
 				// NOTE: It is very bad practice to write this function this way.
 				// Please refer to the documentation of how to do this properly.
 				if (amount > shares) revert();
