@@ -197,13 +197,21 @@ bool SyntaxChecker::visit(PlaceholderStatement const&)
 	return true;
 }
 
+bool SyntaxChecker::visit(ContractDefinition const& _contract)
+{
+	if (_contract.contractKind() == ContractDefinition::ContractKind::Interface)
+		m_isInterface = true;
+
+	return true;
+}
+
 bool SyntaxChecker::visit(FunctionDefinition const& _function)
 {
 	bool const v050 = m_sourceUnit->annotation().experimentalFeatures.count(ExperimentalFeature::V050);
 
 	if (_function.noVisibilitySpecified())
 	{
-		string suggestedVisibility = _function.isFallback() ? "external" : "public";
+		string suggestedVisibility = _function.isFallback() || m_isInterface ? "external" : "public";
 		m_errorReporter.syntaxError(
 			_function.location(),
 			"No visibility specified. Did you intend to add \"" + suggestedVisibility + "\"?"
