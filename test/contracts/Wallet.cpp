@@ -173,7 +173,7 @@ contract multiowned {
 		emit RequirementChanged(_newRequired);
 	}
 
-	function isOwner(address _addr) returns (bool) {
+	function isOwner(address _addr) public returns (bool) {
 		return m_ownerIndex[uint(_addr)] > 0;
 	}
 
@@ -288,7 +288,7 @@ contract daylimit is multiowned {
 	// METHODS
 
 	// constructor - stores initial daily limit and records the present day's index.
-	constructor(uint _limit) {
+	constructor(uint _limit) public {
 		m_dailyLimit = _limit;
 		m_lastDay = today();
 	}
@@ -348,7 +348,7 @@ contract multisig {
 	// TODO: document
 	function changeOwner(address _from, address _to) external;
 	function execute(address _to, uint _value, bytes _data) external returns (bytes32);
-	function confirm(bytes32 _h) returns (bool);
+	function confirm(bytes32 _h) public returns (bool);
 }
 
 // usage:
@@ -409,7 +409,7 @@ contract Wallet is multisig, multiowned, daylimit {
 
 	// confirm a transaction through just the hash. we use the previous transactions map, m_txs, in order
 	// to determine the body of the transaction from the hash provided.
-	function confirm(bytes32 _h) onlymanyowners(_h) returns (bool) {
+	function confirm(bytes32 _h) onlymanyowners(_h) public returns (bool) {
 		if (m_txs[_h].to != 0x0000000000000000000000000000000000000000) {
 			m_txs[_h].to.call.value(m_txs[_h].value)(m_txs[_h].data);
 			emit MultiTransact(msg.sender, _h, m_txs[_h].value, m_txs[_h].to, m_txs[_h].data);
